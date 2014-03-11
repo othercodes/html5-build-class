@@ -1,0 +1,7 @@
+body{font-family: helvetica, arial;color:#484848;}
+h1 {color:#0070FF;}
+table {width:100%;border-collapse: collapse;}
+table thead {border-bottom: solid 2px #aaa;}
+table tbody tr {border-bottom:solid 1px #ccc;}
+table tbody tr:hover {background: #eee;}
+table tbody tr td{padding: 3px 3px 3px 10px;}

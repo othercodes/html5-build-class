@@ -4,7 +4,6 @@
  * @author David Unay Santisteban <slavepens@gmail.com>
  * @package SlaveFramework
  * @copyright (c) 2014, David Unay Santisteban
- * @license http://www.gnu.org/licenses/gpl.txt GPLv2 
  * @version 1.0.20140306
  */
 

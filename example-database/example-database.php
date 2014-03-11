@@ -8,7 +8,7 @@ $html->setTitle('HTML 5 Test');
 $html->addCSS('style.css');
 
 $content = $html->tag('h1', 'Example');
-$content .= $html->tag('p', '<b>database.pdo.class.php</b> and <b>htnl5.class.php</b>');
+$content .= $html->tag('p', '<b>database.pdo.class.php</b> and <b>html5.class.php</b>');
 
 $db = database::getInstance();
 $db->query('SELECT * FROM usuarios');

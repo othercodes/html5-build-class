@@ -16,8 +16,6 @@ $data = $db->loadAssocList();
 
 $content .= $html->table($data,'ASSOC_THEAD');
 
-$content .= $html->img('example.png', 'example image','img','sample-img');
-
 $html->loadContent($content);
 $html->render();
 ?>

@@ -90,7 +90,7 @@ class html5 {
      * @param String $class nombre de la class de la tabla.
      * @return String resultado html
      */
-    public static function tag($tag,$content,$id = null,$class = null){
+    public static function tag($tag, $content, $id = null,$class = null){
         $id     = self::setAttr('id',$id);
         $class  = self::setAttr('class', $class);
         $buffer = "<".$tag.$id.$class.">\n".$content."\n</".$tag.">\n";

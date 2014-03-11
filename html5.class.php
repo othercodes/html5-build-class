@@ -31,7 +31,7 @@ class html5 {
      * stylesheet del documento.
      * @var string 
      */
-    public $css;
+    public $stylesheets;
     
     /**
      * Contenido general.
@@ -62,12 +62,8 @@ class html5 {
      * Añade una hoja de estilos
      * @param string $css ruta del css
      */
-    public function addCSS($css = null) {
-        if ($css != null){
-            $this->stylesheets .= "\t".'<link rel="stylesheet" href="'.$css.'" />'."\n";
-        } else {
-            return FALSE;
-        }
+    public function addCSS($css) {
+        $this->stylesheets .= "\t".'<link rel="stylesheet" href="'.$css.'" />'."\n";
     }
     
     /**
@@ -75,11 +71,7 @@ class html5 {
      * @param string $js ruta de js
      */
     public function addJS($js = null) {
-        if($js != null){
-            $this->script .= "\t".'<script src="'.$js.'"></script>'."\n";
-        } else {
-            return FALSE;
-        }
+        $this->script .= "\t".'<script src="'.$js.'"></script>'."\n";
     }
     
     /**
@@ -98,29 +90,26 @@ class html5 {
      * @param String $class nombre de la class de la tabla.
      * @return String resultado html
      */
-    public static function tag($tag,$content,$id = null,$class = null ,$style= null ){
-        $buffer = "";
-        $id     = ($id != null)? " id='$id'":"";
-        $class  = ($class != null)? " class='$class'":"";
-        $style  = ($style != null)? " style='$style'":"";
-        $buffer .= "<".$tag.$id.$class.$style.">\n".$content."\n</".$tag.">\n";
+    public static function tag($tag,$content,$id = null,$class = null){
+        $id     = self::setAttr('id',$id);
+        $class  = self::setAttr('class', $class);
+        $buffer = "<".$tag.$id.$class.">\n".$content."\n</".$tag.">\n";
         return $buffer;
     }
     
     /**
      * Construye una tabla en base a los arrays recibidos
+     * @param array $tbody array 2D para el cuerpo de la tabla.
      * @param mixed $thead puede ser un array simple o la clave ASSOC_THEAD, 
      * este ultimo cargara el nombre asociado de cada campo. 
-     * @param array $tfooter array simple para el pie de la tabla.
-     * @param array $tbody array 2D para el cuerpo de la tabla.
+     * @param array $tfoot array simple para el pie de la tabla.
      * @param String $id nombre del id de la tabla.
      * @param String $class nombre de la class de la tabla.
      * @return String html de la tabla
      */
-    public static function table($tbody,$thead,$tfoot = null,$id = null,$class = null){
-        $id     = ($id != null)? " id='$id'":"";
-        $class  = ($class != null)? " class='$class'":"";
-        
+    public static function table($tbody,$thead,$tfoot = null,$id = null,$class = null){   
+        $id     = self::setAttr('id',$id);
+        $class  = self::setAttr('class', $class);
         $table = "<table$id$class>\n";
         if($thead != NULL) {
             $table .= "<thead>\n<tr>\n";
@@ -166,26 +155,24 @@ class html5 {
      * @return String html de la imagen.
      */
     public static function img($src,$alt,$id = null ,$class = null ){
-        $buffer = "";
-        $id     = ($id != null)? " id='$id'":"";
-        $class  = ($class != null)? " class='$class'":"";
+        $id     = self::setAttr('id',$id);
+        $class  = self::setAttr('class', $class);
         $buffer = "<img src=\"".$src."\" alt=\"".$alt."\" $id$class />\n";
         return $buffer;
     }
     
     /**
      * Crea un enlace
-     * @param String $href url del enlace.
-     * @param String $target objetivo del enlace _self, _blank o _parent
+     * @param String $href url del enlace.     
      * @param String $text texto del enlace.
+     * @param String $target objetivo del enlace _self, _blank o _parent
      * @param String $id id del enlace.
      * @param String $class clase del enlace.
      * @return String html final del enlace.
      */
-    public static function link($href,$target="_self",$text,$id = null ,$class = null ){
-        $buffer = "";
-        $id     = ($id != null)? " id='$id'":"";
-        $class  = ($class != null)? " class='$class'":"";
+    public static function link($href, $text, $target = "_self",$id = null ,$class = null ){
+        $id     = self::setAttr('id',$id);
+        $class  = self::setAttr('class', $class);
         $buffer = "<a href=\"$href\" target=\"$target\" $id$class>".$text."</a>\n";
         return $buffer;
     }
@@ -198,10 +185,9 @@ class html5 {
      * @param String $class clase de la lista.
      * @return String html de la lista.
      */
-    public static function lists($list,$type="ul",$id = null ,$class = null){
-        $buffer = "";
-        $id     = ($id != null)? " id='$id'":"";
-        $class  = ($class != null)? " class='$class'":"";
+    public static function lists($list,$type = "ul", $id = null ,$class = null){
+        $id     = self::setAttr('id',$id);
+        $class  = self::setAttr('class', $class);
         $buffer = "<$type$id$class>\n";
         foreach ($list as $entry){
             $buffer .= "\t<li>$entry</li> \n";
@@ -220,11 +206,10 @@ class html5 {
      * @param boolean $disabled establece si el campo esta deshabilitado o no.
      * @return String codigo html final
      */
-    public static function input($type,$name,$value = null,$id = null,$class = null,$disabled=false) {
-        $buffer = "";
-        $id     = ($id != null)? " id='$id'":"";
-        $class  = ($class != null)? " class='$class'":"";
-        $value  = ($value != null)? " value='$value'":"";
+    public static function input($type,$name,$value = null,$id = null,$class = null,$disabled = null) {
+        $id     = self::setAttr('id',$id);
+        $class  = self::setAttr('class', $class);
+        $name   = self::setAttr('name', $name);
         $disabled = ($disabled == true)? " disabled='disabled'":"";
         $buffer = "<input type=\"$type\" name=\"$name\"$value$disabled$id$class>\n";
         return $buffer;
@@ -239,10 +224,9 @@ class html5 {
      * @return String html final
      */
     public static function textarea($name,$value = null,$id = null ,$class = null){
-        $buffer = "";
-        $id     = ($id != null)? " id='$id'":"";
-        $class  = ($class != null)? " class=\'$class\'":"";
-        $name   = ($name!= null)? " name='$name'":"";
+        $id     = self::setAttr('id',$id);
+        $class  = self::setAttr('class', $class);
+        $name   = self::setAttr('name', $name);
         $buffer = "<textarea $name$id$class>$value</textarea>\n";
         return $buffer;
     }
@@ -260,11 +244,12 @@ class html5 {
      * @return string devuelve el html final del formulario.
      */
     public static function buildForm($fields,$action,$method="post",$legend = null ,$enctype = null,$name = null,$id = null,$fieldset = true){
-        $buffer = "";
-        $name   = ($name != null)? " name='$name'":"";
-        $id     = ($id != null)? " id='$id'":"";
-        $enctype = ($enctype != null)? " enctype='$enctype'":"";
-        $legend = ($legend != null)? "<legend>$legend</legend>\n":"";
+        $name   = self::setAttr('name',$name);
+        $id     = self::setAttr('id',$id);
+        $enctype     = self::setAttr('enctype',$enctype);
+        if ($legend != null) {
+            $legend = self::tag('legend', $legend);
+        }  
         $buffer = "<form$name$id action=\"$action\" method=\"$method\"$enctype>\n";
         if ($fieldset != null) {
             $buffer .= "<fieldset>\n$legend$fields</fieldset>\n";
@@ -282,17 +267,28 @@ class html5 {
      * @param String $class clase del select 
      * @return string codigo html final
      */
-    public static function select($options,$name = null,$id = null ,$class = null){
-        $buffer = "";
-        $class   = ($name != null)? " class='$class'":"";
-        $id     = ($id != null)? " id='$id'":"";
-        $name   = ($name != null)? " name='$name'":"";
+    public function select($options,$name = null,$id = null ,$class = null){
+        $id     = self::setAttr('id',$id);
+        $class  = self::setAttr('class', $class);
+        $name   = self::setAttr('name', $name);
         $buffer = "<select$name$id$class>\n";
         foreach($options as $key => $option){
             $buffer .= "<option value=\"$key\">".$option."</option>\n";
         }
         $buffer .= "</select>\n";
         return $buffer;
+    }
+    
+    /**
+     * Establece un atributo en un elemento html.
+     * @param string $id
+     * @return boolean | string
+     */
+    private function setAttr($attr,$value){
+        if ($value != null) {
+            return " ".$attr."='".$value."'";
+        }
+        return FALSE;
     }
     
     /**
@@ -303,8 +299,8 @@ class html5 {
         if($this->script){
             $this->head .= $this->script;
         }
-        if($this->css){
-            $this->head .= $this->css;
+        if($this->stylesheets){
+            $this->head .= $this->stylesheets;
         }
         $this->head .= "</head>\n";
     }

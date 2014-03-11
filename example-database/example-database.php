@@ -1,7 +1,7 @@
 <?php
 require 'configuration.php';
-require 'database.pdo.class.php';
-require 'html5.class.php';
+require '../database.pdo.class.php'; // ----> this class is in other repository.
+require '../html5.class.php';
 
 $html = new html5('utf-8','es');
 $html->setTitle('HTML 5 Test');

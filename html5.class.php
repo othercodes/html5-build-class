@@ -329,3 +329,4 @@ class html5 {
         print $this->document;
     }
 }
+?>

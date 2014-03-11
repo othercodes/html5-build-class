@@ -1,5 +1,5 @@
 <?php
-require 'configuration.php';
+require '../configuration.php'; // ----> this archive is the configuration file for database.pdo.class.php 
 require '../database.pdo.class.php'; // ----> this class is in other repository.
 require '../html5.class.php';
 

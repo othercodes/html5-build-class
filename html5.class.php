@@ -4,9 +4,9 @@
  * @author David Unay Santisteban <slavepens@gmail.com>
  * @package SlaveFramework
  * @copyright (c) 2014, David Unay Santisteban
- * @version 1.0.20140306
+ * @version 1.2.20140306
  */
-
+ 
 class html5 {
     
     /**
@@ -21,6 +21,24 @@ class html5 {
      */
     public $lang;
     
+    /**
+     * scripts js del documento.
+     * @var string 
+     */
+    public $script;
+    
+    /**
+     * stylesheet del documento.
+     * @var string 
+     */
+    public $css;
+    
+    /**
+     * Contenido general.
+     * @var string 
+     */
+    public $content;
+
     /**
      * Constructor de la clase html5
      * @param String $charset define la codificacion 
@@ -44,16 +62,24 @@ class html5 {
      * Añade una hoja de estilos
      * @param string $css ruta del css
      */
-    public function addCSS($css) {
-        $this->stylesheets .= "\t".'<link rel="stylesheet" href="'.$css.'" />'."\n";
+    public function addCSS($css = null) {
+        if ($css != null){
+            $this->stylesheets .= "\t".'<link rel="stylesheet" href="'.$css.'" />'."\n";
+        } else {
+            return FALSE;
+        }
     }
     
     /**
      * Añade un documento javascript
      * @param string $js ruta de js
      */
-    public function addJS($js) {
-        $this->script .= "\t".'<script src="'.$js.'"></script>'."\n";
+    public function addJS($js = null) {
+        if($js != null){
+            $this->script .= "\t".'<script src="'.$js.'"></script>'."\n";
+        } else {
+            return FALSE;
+        }
     }
     
     /**
@@ -72,7 +98,8 @@ class html5 {
      * @param String $class nombre de la class de la tabla.
      * @return String resultado html
      */
-    public static function tag($tag,$content,$id,$class,$style){
+    public static function tag($tag,$content,$id = null,$class = null ,$style= null ){
+        $buffer = "";
         $id     = ($id != null)? " id='$id'":"";
         $class  = ($class != null)? " class='$class'":"";
         $style  = ($style != null)? " style='$style'":"";
@@ -90,7 +117,7 @@ class html5 {
      * @param String $class nombre de la class de la tabla.
      * @return String html de la tabla
      */
-    public static function table($thead,$tfoot,$tbody,$id,$class){
+    public static function table($tbody,$thead,$tfoot = null,$id = null,$class = null){
         $id     = ($id != null)? " id='$id'":"";
         $class  = ($class != null)? " class='$class'":"";
         
@@ -138,7 +165,8 @@ class html5 {
      * @param String $class clase de la imagen.
      * @return String html de la imagen.
      */
-    public static function img($src,$alt,$id,$class){
+    public static function img($src,$alt,$id = null ,$class = null ){
+        $buffer = "";
         $id     = ($id != null)? " id='$id'":"";
         $class  = ($class != null)? " class='$class'":"";
         $buffer = "<img src=\"".$src."\" alt=\"".$alt."\" $id$class />\n";
@@ -154,7 +182,8 @@ class html5 {
      * @param String $class clase del enlace.
      * @return String html final del enlace.
      */
-    public static function link($href,$target="_self",$text,$id,$class){
+    public static function link($href,$target="_self",$text,$id = null ,$class = null ){
+        $buffer = "";
         $id     = ($id != null)? " id='$id'":"";
         $class  = ($class != null)? " class='$class'":"";
         $buffer = "<a href=\"$href\" target=\"$target\" $id$class>".$text."</a>\n";
@@ -169,7 +198,8 @@ class html5 {
      * @param String $class clase de la lista.
      * @return String html de la lista.
      */
-    public static function lists($list,$type="ul",$id,$class){
+    public static function lists($list,$type="ul",$id = null ,$class = null){
+        $buffer = "";
         $id     = ($id != null)? " id='$id'":"";
         $class  = ($class != null)? " class='$class'":"";
         $buffer = "<$type$id$class>\n";
@@ -190,7 +220,8 @@ class html5 {
      * @param boolean $disabled establece si el campo esta deshabilitado o no.
      * @return String codigo html final
      */
-    public static function input($type,$name,$value,$id,$class,$disabled=false) {
+    public static function input($type,$name,$value = null,$id = null,$class = null,$disabled=false) {
+        $buffer = "";
         $id     = ($id != null)? " id='$id'":"";
         $class  = ($class != null)? " class='$class'":"";
         $value  = ($value != null)? " value='$value'":"";
@@ -207,7 +238,8 @@ class html5 {
      * @param String $class clase del textarea
      * @return String html final
      */
-    public static function textarea($name,$value,$id,$class){
+    public static function textarea($name,$value = null,$id = null ,$class = null){
+        $buffer = "";
         $id     = ($id != null)? " id='$id'":"";
         $class  = ($class != null)? " class=\'$class\'":"";
         $name   = ($name!= null)? " name='$name'":"";
@@ -227,10 +259,11 @@ class html5 {
      * @param String $fieldset habilita o deshabilita el uso de fieldset puede ser true o false
      * @return string devuelve el html final del formulario.
      */
-    public static function buildForm($fields,$action,$method="post",$legend,$enctype,$name,$id,$fieldset=true){
+    public static function buildForm($fields,$action,$method="post",$legend = null ,$enctype = null,$name = null,$id = null,$fieldset = true){
+        $buffer = "";
         $name   = ($name != null)? " name='$name'":"";
         $id     = ($id != null)? " id='$id'":"";
-        $enctype = ($enctype == "default")? " enctype='application/x-www-form-urlencoded'":"";
+        $enctype = ($enctype != null)? " enctype='$enctype'":"";
         $legend = ($legend != null)? "<legend>$legend</legend>\n":"";
         $buffer = "<form$name$id action=\"$action\" method=\"$method\"$enctype>\n";
         if ($fieldset != null) {
@@ -249,7 +282,8 @@ class html5 {
      * @param String $class clase del select 
      * @return string codigo html final
      */
-    public static function select($options,$name,$id,$class){
+    public static function select($options,$name = null,$id = null ,$class = null){
+        $buffer = "";
         $class   = ($name != null)? " class='$class'":"";
         $id     = ($id != null)? " id='$id'":"";
         $name   = ($name != null)? " name='$name'":"";
@@ -265,7 +299,14 @@ class html5 {
      * Monta el head del documento.
      */
     private function buildHead(){
-        $this->head = "<head>\n".$this->title."\t<meta charset=\"".$this->charset."\">\n".$this->script.$this->stylesheets."</head>\n";
+        $this->head = "<head>\n".$this->title."\t<meta charset=\"".$this->charset."\">\n";
+        if($this->script){
+            $this->head .= $this->script;
+        }
+        if($this->css){
+            $this->head .= $this->css;
+        }
+        $this->head .= "</head>\n";
     }
     
     /**

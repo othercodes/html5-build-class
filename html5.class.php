@@ -90,7 +90,7 @@ class html5 {
      * @param String $class nombre de la class de la tabla.
      * @return String resultado html
      */
-    public static function tag($tag, $content, $id = null,$class = null){
+    public static function tag($tag, $content, $id = null, $class = null){
         $id     = self::setAttr('id',$id);
         $class  = self::setAttr('class', $class);
         $buffer = "<".$tag.$id.$class.">\n".$content."\n</".$tag.">\n";
@@ -296,6 +296,7 @@ class html5 {
      */
     private function buildHead(){
         $this->head = "<head>\n".$this->title."\t<meta charset=\"".$this->charset."\">\n";
+        $this->head .= "\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n";
         if($this->script){
             $this->head .= $this->script;
         }
